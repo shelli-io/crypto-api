@@ -81,7 +81,6 @@ low(adapter)
 
         // Initialise MAM State
         let seed = db.get('config.seed').value()
-        console.log("seed", seed)
         if (seed) {
             console.log("seed da")
             mamState = Mam.init(PROVIDER, seed)
@@ -93,9 +92,7 @@ low(adapter)
             
             
         } else {
-            console.log("seed net da")
             seed = generateSeed()
-            console.log("seed hjezt da: ", seed)
             db.set('config.seed', seed)
                 .write()
 
@@ -106,7 +103,6 @@ low(adapter)
         }
 
 
-        console.log("start crone job")
         new CronJob('0 */1 * * * *', async function () {
             console.log("Publishing data...")
             publishSnapshot().then((response) => {
@@ -121,21 +117,17 @@ low(adapter)
             })
 
         }, null, true, 'America/Los_Angeles');
-        console.log("lob")
         // Set db default values
         return db.defaults({ snapshots: [], config: {} }).write()
     })
     .then(() => {
-        console.log("serber")
-
         app.listen(PORT, () => console.log('Server listening on port ' + PORT))
     })
 
 const fetchData = async () => {
-    console.log("fetchData")
 
     /*
-// on trading pairs (ex. tBTCUSD)
+    // on trading pairs (ex. tBTCUSD)
 
     [
         BID, 
@@ -198,12 +190,7 @@ const publishToMAM = async data => {
 
 const publishSnapshot = async () => {
 
-
-    console.log("publishSnapshot")
     let data = await fetchData()
-    console.log("data", data)
-
-    return {}
 
     let mam_message = {
         timestamp: Date.now(),
