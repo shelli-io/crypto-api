@@ -55,6 +55,15 @@ low(adapter)
             res.send(posts)
         })
 
+        // GET /root
+        app.get('/getLatestSnapshot', (req, res) => {
+            const latestSnapshot = db.get('snapshots')
+                .last()
+                .value()
+            res.send(latestSnapshot)
+        })
+
+
 
         // GET /root
         app.get('/', (req, res) => {
@@ -82,7 +91,6 @@ low(adapter)
         // Initialise MAM State
         let seed = db.get('config.seed').value()
         if (seed) {
-            console.log("seed da")
             mamState = Mam.init(PROVIDER, seed)
             
             let old_state = db.get('config.state').value()
